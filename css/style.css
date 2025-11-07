@@ -1,64 +1,40 @@
-/* Base page styling (keep your current style) */
 body {
   font-family: 'Segoe UI', Arial, sans-serif;
   margin: 0;
   background-color: #f2e3c6;
   color: #2f261a;
   text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-height: 100vh;
 }
 
-/* Header */
-header {
-  background: #b99564;
+h1 {
+  background-color: #b99564;
   color: white;
   padding: 1em 0;
-  width: 100%;
+  margin: 0;
 }
 
-/* Buttons */
-button {
-  background-color: #7a5e3b;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 12px 24px;
-  margin: 10px;
-  font-size: 1em;
+#game-container {
+  max-width: 800px;
+  margin: 30px auto;
+  background-color: #fff8e7;
+  padding: 20px;
+  border-radius: 12px;
+  border: 3px solid #b99564;
+  min-height: 400px;
   cursor: pointer;
 }
-button:hover {
-  background-color: #5e442a;
+
+#info-box {
+  margin-top: 20px;
+  font-size: 18px;
+  text-align: left;
+  white-space: pre-wrap;
 }
 
-/* Container style (for Learn page) */
-.container {
-  max-width: 700px;
-  margin: 50px auto;
-  background: #fff8e7;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
-
-/* Game canvas styling */
-#game {
-  width: 800px;            /* fixed width */
-  height: 600px;           /* fixed height */
-  border: 3px solid #b99564;
-  border-radius: 12px;
-  margin: 30px 0;
-  background-color: #e3d5b8; /* sand color */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-}
-
-/* Footer/back button styling */
 footer {
-  margin-bottom: 20px;
+  margin: 20px 0;
 }
+
 footer a {
   color: white;
   background-color: #7a5e3b;
