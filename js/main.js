@@ -1,46 +1,59 @@
-// Complex archaeology lessons
+// List of archaeology lessons
 const lessons = [
   {
-    title: "Pottery Shards",
-    info: "Archaeologists interpret shards in context. Alone they tell little, but alongside other artifacts they reveal trade, technology, and culture."
+    title: "Pottery Shard",
+    info: "Context: Pottery shards reveal cultural practices when interpreted in context with other artifacts."
   },
   {
-    title: "Stone Tools",
-    info: "Stone tools are dated via stratigraphy and typology. Wear patterns indicate diet, work, and social structures."
+    title: "Stone Tool",
+    info: "Method: Stratigraphy and wear patterns on stone tools inform about diet, work, and social structure."
   },
   {
-    title: "Colonial Coins",
-    info: "Modern archaeology centers Indigenous voices, correcting biased narratives from colonial-era digs."
+    title: "Colonial Coin",
+    info: "Decolonial: Modern archaeology centers Indigenous voices, correcting colonial-era biases."
   },
   {
-    title: "Bead Necklaces",
-    info: "Decorative objects reveal trade routes, aesthetic preferences, and cultural symbolism."
+    title: "Bead Necklace",
+    info: "Interpretation: Trade routes and cultural connections are revealed through decorative objects."
   },
   {
-    title: "Burial Sites",
-    info: "Studying burials uncovers religious beliefs, health, and social status of ancient communities."
-  },
+    title: "Burial Site",
+    info: "Studying burials reveals health, social status, and religious beliefs of ancient populations."
+  }
 ];
 
-let lessonIndex = 0;
-
-const gameContainer = document.getElementById('game-container');
+const digArea = document.getElementById('dig-area');
 const infoBox = document.getElementById('info-box');
 
-// Function to show the next lesson
-function showNextLesson() {
-  const lesson = lessons[lessonIndex];
-  infoBox.textContent = `📖 ${lesson.title}\n\n${lesson.info}`;
-  lessonIndex = (lessonIndex + 1) % lessons.length;
+// Create random dig spots
+const numSpots = 5;
+const spots = [];
+
+for (let i = 0; i < numSpots; i++) {
+  const spot = document.createElement('div');
+  spot.classList.add('dig-spot');
+  spot.style.top = Math.random() * (digArea.clientHeight - 50) + 'px';
+  spot.style.left = Math.random() * (digArea.clientWidth - 50) + 'px';
+  digArea.appendChild(spot);
+
+  // Assign lesson to this spot
+  const lessonIndex = i % lessons.length;
+  spot.dataset.title = lessons[lessonIndex].title;
+  spot.dataset.info = lessons[lessonIndex].info;
+
+  // Click event for digging
+  spot.addEventListener('click', (e) => {
+    e.stopPropagation();
+    infoBox.textContent = `📖 ${spot.dataset.title}\n\n${spot.dataset.info}`;
+    // Remove the spot after digging
+    spot.remove();
+  });
+
+  spots.push(spot);
 }
 
-// Click anywhere in the game container
-gameContainer.addEventListener('click', showNextLesson);
-
-// Press SPACE key
-document.addEventListener('keydown', function(e) {
-  if (e.code === "Space") {
-    e.preventDefault(); // prevent scrolling
-    showNextLesson();
-  }
+// Optional: click empty space to show a random fact
+digArea.addEventListener('click', () => {
+  const randomLesson = lessons[Math.floor(Math.random() * lessons.length)];
+  infoBox.textContent = `📖 ${randomLesson.title}\n\n${randomLesson.info}`;
 });
