@@ -5,49 +5,19 @@
   <title>ArchaeoQuest — Game</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      background-color: #f2e3c6;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-    }
-
-    #game {
-      width: 800px;   /* fixed size canvas */
-      height: 600px;
-      border: 3px solid #b99564;
-      border-radius: 12px;
-    }
-
-    footer {
-      margin-top: 20px;
-    }
-    footer a {
-      color: white;
-      background-color: #7a5e3b;
-      text-decoration: none;
-      padding: 10px 20px;
-      border-radius: 8px;
-      font-weight: bold;
-    }
-    footer a:hover {
-      background-color: #5e442a;
-    }
-  </style>
 </head>
 <body>
-  <div id="game"></div>
+  <h1>🪓 Archaeology Dig Simulator</h1>
 
-  <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.js"></script>
-  <script src="js/main.js"></script>
+  <div id="game-container">
+    <p id="instruction">Click anywhere or press SPACE to dig!</p>
+    <div id="info-box">Your discoveries will appear here.</div>
+  </div>
 
   <footer>
     <a href="index.html">🏠 Back Home</a>
   </footer>
+
+  <script src="js/main.js"></script>
 </body>
 </html>
