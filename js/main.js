@@ -1,34 +1,32 @@
-// List of archaeology lessons
+// Lessons
 const lessons = [
   {
     title: "Pottery Shard",
-    info: "Context: Pottery shards reveal cultural practices when interpreted in context with other artifacts."
+    info: "Archaeologists interpret shards in context. Alone they tell little, but together they reveal trade, technology, and culture."
   },
   {
     title: "Stone Tool",
-    info: "Method: Stratigraphy and wear patterns on stone tools inform about diet, work, and social structure."
+    info: "Stratigraphy and wear patterns reveal diet, work, and social structures."
   },
   {
     title: "Colonial Coin",
-    info: "Decolonial: Modern archaeology centers Indigenous voices, correcting colonial-era biases."
+    info: "Modern archaeology centers Indigenous voices, correcting colonial-era biases."
   },
   {
     title: "Bead Necklace",
-    info: "Interpretation: Trade routes and cultural connections are revealed through decorative objects."
+    info: "Trade routes and cultural connections are revealed through decorative objects."
   },
   {
     title: "Burial Site",
-    info: "Studying burials reveals health, social status, and religious beliefs of ancient populations."
+    info: "Burials reveal health, social status, and religious beliefs of ancient populations."
   }
 ];
 
 const digArea = document.getElementById('dig-area');
 const infoBox = document.getElementById('info-box');
 
-// Create random dig spots
+// Create visible dig spots
 const numSpots = 5;
-const spots = [];
-
 for (let i = 0; i < numSpots; i++) {
   const spot = document.createElement('div');
   spot.classList.add('dig-spot');
@@ -36,24 +34,21 @@ for (let i = 0; i < numSpots; i++) {
   spot.style.left = Math.random() * (digArea.clientWidth - 50) + 'px';
   digArea.appendChild(spot);
 
-  // Assign lesson to this spot
-  const lessonIndex = i % lessons.length;
-  spot.dataset.title = lessons[lessonIndex].title;
-  spot.dataset.info = lessons[lessonIndex].info;
+  // Assign lesson
+  const lesson = lessons[i % lessons.length];
+  spot.dataset.title = lesson.title;
+  spot.dataset.info = lesson.info;
 
-  // Click event for digging
+  // Click event
   spot.addEventListener('click', (e) => {
     e.stopPropagation();
     infoBox.textContent = `📖 ${spot.dataset.title}\n\n${spot.dataset.info}`;
-    // Remove the spot after digging
-    spot.remove();
+    spot.remove(); // remove spot after digging
   });
-
-  spots.push(spot);
 }
 
-// Optional: click empty space to show a random fact
+// Optional: click empty space to get random lesson
 digArea.addEventListener('click', () => {
-  const randomLesson = lessons[Math.floor(Math.random() * lessons.length)];
-  infoBox.textContent = `📖 ${randomLesson.title}\n\n${randomLesson.info}`;
+  const lesson = lessons[Math.floor(Math.random() * lessons.length)];
+  infoBox.textContent = `📖 ${lesson.title}\n\n${lesson.info}`;
 });
