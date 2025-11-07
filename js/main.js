@@ -28,8 +28,9 @@ const config = {
 const game = new Phaser.Game(config);
 
 function preload() {
-  this.load.image('ground', 'https://i.imgur.com/7e8p6fM.png');
-  this.load.image('artifact', 'https://i.imgur.com/j3zE6kS.png');
+  // Ground and artifact use built-in Phaser textures instead of external images
+this.textures.generate('ground', { data: ['bbbbbbbb','bbbbbbbb','bbbbbbbb','bbbbbbbb','bbbbbbbb','bbbbbbbb','bbbbbbbb','bbbbbbbb'], pixelWidth: 8, palette: { b: '#e3d5b8' } });
+this.textures.generate('artifact', { data: ['.1.','.111.','.1.'], pixelWidth: 16, palette: { 1: '#b35c2e' } });
 }
 
 function create() {
