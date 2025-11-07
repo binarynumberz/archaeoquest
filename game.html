@@ -2,17 +2,21 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>ArchaeoQuest — Game</title>
+  <title>BinaryNumberz — Archaeology Quiz</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>ArchaeoQuest — Archaeology Dig Simulator</h1>
+  <h1>📝 Archaeology Quiz Challenge</h1>
 
   <div id="game-container">
-    <p id="instruction">Click on a dig spot to uncover an artifact!</p>
-    <div id="dig-area"></div>
-    <div id="info-box">Your discoveries will appear here.</div>
+    <div id="quiz-area">
+      <p id="question">Press "Start Quiz" to begin!</p>
+      <div id="choices"></div>
+      <button id="next-btn" style="display:none;">Next Question</button>
+      <button id="start-btn">Start Quiz</button>
+    </div>
+    <div id="score-box">Score: 0</div>
   </div>
 
   <footer>
