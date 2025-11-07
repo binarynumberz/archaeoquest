@@ -1,5 +1,3 @@
-// Expanded archaeology quiz game
-
 const questions = [
   {
     question: "Which method helps archaeologists date layers in a dig?",
@@ -18,12 +16,7 @@ const questions = [
   },
   {
     question: "What can pottery shards tell us?",
-    choices: [
-      "Trade patterns",
-      "Technological advances",
-      "Cultural practices",
-      "All of the above"
-    ],
+    choices: ["Trade patterns", "Technological advances", "Cultural practices", "All of the above"],
     answer: "All of the above"
   },
   {
@@ -40,26 +33,6 @@ const questions = [
     question: "Burial site studies can reveal:",
     choices: ["Religious beliefs", "Social status", "Health", "All of the above"],
     answer: "All of the above"
-  },
-  {
-    question: "Stratigraphy is important because:",
-    choices: [
-      "It measures carbon decay",
-      "It helps date layers and artifacts",
-      "It analyzes decorative patterns",
-      "It identifies the oldest coins"
-    ],
-    answer: "It helps date layers and artifacts"
-  },
-  {
-    question: "Why study colonial-era artifacts carefully?",
-    choices: [
-      "To ignore Indigenous contributions",
-      "To understand biases and context",
-      "To remove all objects from local lands",
-      "To simplify history"
-    ],
-    answer: "To understand biases and context"
   }
 ];
 
@@ -68,6 +41,7 @@ let score = 0;
 
 const questionEl = document.getElementById('question');
 const choicesEl = document.getElementById('choices');
+const feedbackBox = document.getElementById('feedback-box');
 const nextBtn = document.getElementById('next-btn');
 const startBtn = document.getElementById('start-btn');
 const scoreBox = document.getElementById('score-box');
@@ -76,6 +50,7 @@ function startQuiz() {
   currentQuestion = 0;
   score = 0;
   scoreBox.textContent = `Score: ${score}`;
+  feedbackBox.textContent = "Answer the questions to uncover archaeology facts!";
   startBtn.style.display = "none";
   showQuestion();
 }
@@ -84,10 +59,12 @@ function showQuestion() {
   const q = questions[currentQuestion];
   questionEl.textContent = `Q${currentQuestion + 1}: ${q.question}`;
   choicesEl.innerHTML = '';
-  
+  feedbackBox.textContent = '';
+
   q.choices.forEach(choice => {
     const btn = document.createElement('button');
     btn.textContent = choice;
+    btn.classList.add('choice-btn');
     btn.addEventListener('click', () => selectAnswer(choice));
     choicesEl.appendChild(btn);
   });
@@ -99,9 +76,9 @@ function selectAnswer(choice) {
   const correct = questions[currentQuestion].answer;
   if (choice === correct) {
     score++;
-    alert("✅ Correct!");
+    feedbackBox.textContent = `✅ Correct!`;
   } else {
-    alert(`❌ Wrong! Correct answer: ${correct}`);
+    feedbackBox.textContent = `❌ Wrong! Correct answer: ${correct}`;
   }
   scoreBox.textContent = `Score: ${score}`;
   nextBtn.style.display = "inline-block";
@@ -114,6 +91,7 @@ nextBtn.addEventListener('click', () => {
   } else {
     questionEl.textContent = "🎉 Quiz Complete!";
     choicesEl.innerHTML = '';
+    feedbackBox.textContent = `Your final score is ${score}/${questions.length}`;
     nextBtn.style.display = "none";
     startBtn.textContent = "Restart Quiz";
     startBtn.style.display = "inline-block";
