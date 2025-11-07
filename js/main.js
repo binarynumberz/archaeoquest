@@ -1,54 +1,101 @@
-// Lessons
-const lessons = [
+// Full complex archaeology quiz game
+
+const questions = [
   {
-    title: "Pottery Shard",
-    info: "Archaeologists interpret shards in context. Alone they tell little, but together they reveal trade, technology, and culture."
+    question: "Which method helps archaeologists date layers in a dig?",
+    choices: ["Radiocarbon dating", "Stratigraphy", "Experimental cooking", "Astrology"],
+    answer: "Stratigraphy"
   },
   {
-    title: "Stone Tool",
-    info: "Stratigraphy and wear patterns reveal diet, work, and social structures."
+    question: "What is a decolonial approach in archaeology?",
+    choices: [
+      "Ignoring Indigenous perspectives",
+      "Centering local voices and correcting biases",
+      "Collecting artifacts for museums only",
+      "Using only European excavation methods"
+    ],
+    answer: "Centering local voices and correcting biases"
   },
   {
-    title: "Colonial Coin",
-    info: "Modern archaeology centers Indigenous voices, correcting colonial-era biases."
+    question: "What can pottery shards tell us?",
+    choices: [
+      "Trade patterns",
+      "Technological advances",
+      "Cultural practices",
+      "All of the above"
+    ],
+    answer: "All of the above"
   },
   {
-    title: "Bead Necklace",
-    info: "Trade routes and cultural connections are revealed through decorative objects."
+    question: "Wear patterns on stone tools reveal:",
+    choices: ["Diet", "Work practices", "Social structure", "All of the above"],
+    answer: "All of the above"
   },
   {
-    title: "Burial Site",
-    info: "Burials reveal health, social status, and religious beliefs of ancient populations."
+    question: "Decorative beads can inform about:",
+    choices: ["Trade networks", "Aesthetic preferences", "Cultural symbolism", "All of the above"],
+    answer: "All of the above"
+  },
+  {
+    question: "Burial site studies can reveal:",
+    choices: ["Religious beliefs", "Social status", "Health", "All of the above"],
+    answer: "All of the above"
   }
 ];
 
-const digArea = document.getElementById('dig-area');
-const infoBox = document.getElementById('info-box');
+let currentQuestion = 0;
+let score = 0;
 
-// Create visible dig spots
-const numSpots = 5;
-for (let i = 0; i < numSpots; i++) {
-  const spot = document.createElement('div');
-  spot.classList.add('dig-spot');
-  spot.style.top = Math.random() * (digArea.clientHeight - 50) + 'px';
-  spot.style.left = Math.random() * (digArea.clientWidth - 50) + 'px';
-  digArea.appendChild(spot);
+const questionEl = document.getElementById('question');
+const choicesEl = document.getElementById('choices');
+const nextBtn = document.getElementById('next-btn');
+const startBtn = document.getElementById('start-btn');
+const scoreBox = document.getElementById('score-box');
 
-  // Assign lesson
-  const lesson = lessons[i % lessons.length];
-  spot.dataset.title = lesson.title;
-  spot.dataset.info = lesson.info;
-
-  // Click event
-  spot.addEventListener('click', (e) => {
-    e.stopPropagation();
-    infoBox.textContent = `📖 ${spot.dataset.title}\n\n${spot.dataset.info}`;
-    spot.remove(); // remove spot after digging
-  });
+function startQuiz() {
+  currentQuestion = 0;
+  score = 0;
+  scoreBox.textContent = `Score: ${score}`;
+  startBtn.style.display = "none";
+  showQuestion();
 }
 
-// Optional: click empty space to get random lesson
-digArea.addEventListener('click', () => {
-  const lesson = lessons[Math.floor(Math.random() * lessons.length)];
-  infoBox.textContent = `📖 ${lesson.title}\n\n${lesson.info}`;
+function showQuestion() {
+  const q = questions[currentQuestion];
+  questionEl.textContent = `Q${currentQuestion+1}: ${q.question}`;
+  choicesEl.innerHTML = '';
+  q.choices.forEach(choice => {
+    const btn = document.createElement('button');
+    btn.textContent = choice;
+    btn.addEventListener('click', () => selectAnswer(choice));
+    choicesEl.appendChild(btn);
+  });
+  nextBtn.style.display = "none";
+}
+
+function selectAnswer(choice) {
+  const correct = questions[currentQuestion].answer;
+  if (choice === correct) {
+    score += 1;
+    alert("✅ Correct!");
+  } else {
+    alert(`❌ Wrong! Correct answer: ${correct}`);
+  }
+  scoreBox.textContent = `Score: ${score}`;
+  nextBtn.style.display = "inline-block";
+}
+
+nextBtn.addEventListener('click', () => {
+  currentQuestion += 1;
+  if (currentQuestion < questions.length) {
+    showQuestion();
+  } else {
+    questionEl.textContent = "🎉 Quiz Complete!";
+    choicesEl.innerHTML = '';
+    nextBtn.style.display = "none";
+    startBtn.textContent = "Restart Quiz";
+    startBtn.style.display = "inline-block";
+  }
 });
+
+startBtn.addEventListener('click', startQuiz);
