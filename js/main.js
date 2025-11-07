@@ -1,4 +1,4 @@
-// Full complex archaeology quiz game
+// Expanded archaeology quiz game
 
 const questions = [
   {
@@ -40,6 +40,26 @@ const questions = [
     question: "Burial site studies can reveal:",
     choices: ["Religious beliefs", "Social status", "Health", "All of the above"],
     answer: "All of the above"
+  },
+  {
+    question: "Stratigraphy is important because:",
+    choices: [
+      "It measures carbon decay",
+      "It helps date layers and artifacts",
+      "It analyzes decorative patterns",
+      "It identifies the oldest coins"
+    ],
+    answer: "It helps date layers and artifacts"
+  },
+  {
+    question: "Why study colonial-era artifacts carefully?",
+    choices: [
+      "To ignore Indigenous contributions",
+      "To understand biases and context",
+      "To remove all objects from local lands",
+      "To simplify history"
+    ],
+    answer: "To understand biases and context"
   }
 ];
 
@@ -62,21 +82,23 @@ function startQuiz() {
 
 function showQuestion() {
   const q = questions[currentQuestion];
-  questionEl.textContent = `Q${currentQuestion+1}: ${q.question}`;
+  questionEl.textContent = `Q${currentQuestion + 1}: ${q.question}`;
   choicesEl.innerHTML = '';
+  
   q.choices.forEach(choice => {
     const btn = document.createElement('button');
     btn.textContent = choice;
     btn.addEventListener('click', () => selectAnswer(choice));
     choicesEl.appendChild(btn);
   });
+
   nextBtn.style.display = "none";
 }
 
 function selectAnswer(choice) {
   const correct = questions[currentQuestion].answer;
   if (choice === correct) {
-    score += 1;
+    score++;
     alert("✅ Correct!");
   } else {
     alert(`❌ Wrong! Correct answer: ${correct}`);
@@ -86,7 +108,7 @@ function selectAnswer(choice) {
 }
 
 nextBtn.addEventListener('click', () => {
-  currentQuestion += 1;
+  currentQuestion++;
   if (currentQuestion < questions.length) {
     showQuestion();
   } else {
