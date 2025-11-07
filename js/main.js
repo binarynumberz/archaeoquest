@@ -19,48 +19,48 @@ const game = new Phaser.Game(config);
 function preload() {}
 
 function create() {
-  // sand background
+  // draw sand background
   this.bg = this.add.graphics();
   this.bg.fillStyle(0xe3d5b8, 1);
   this.bg.fillRect(0, 0, 800, 600);
 
-  // info text
-  this.infoText = this.add.text(10, 10, 'Click the ground to dig!', { fontSize: '20px', color: '#000', wordWrap: { width: 780 } });
+  // instructions
+  this.infoText = this.add.text(10, 10, 'Press SPACE to dig!', { fontSize: '24px', color: '#000', wordWrap: { width: 780 } });
 
-  // spawn first artifact
+  // initial artifact
   this.spawnArtifact();
 
-  // handle clicks
-  this.input.on('pointerdown', pointer => this.handleClick(pointer));
+  // add spacebar listener
+  this.spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 }
 
 function spawnArtifact() {
+  // pick random artifact
   this.currentArtifact = Phaser.Math.RND.pick(lessons);
 
+  // random position
   this.artifactPos = {
     x: Phaser.Math.Between(100, 700),
     y: Phaser.Math.Between(100, 500)
   };
 
+  // draw artifact as a circle (hidden at first)
   this.artifactSprite = this.add.graphics();
   this.artifactSprite.fillStyle(0x8b0000, 1);
   this.artifactSprite.fillCircle(this.artifactPos.x, this.artifactPos.y, 25);
+  this.artifactSprite.alpha = 0; // start hidden
 }
 
-function handleClick(pointer) {
-  const dist = Phaser.Math.Distance.Between(pointer.x, pointer.y, this.artifactPos.x, this.artifactPos.y);
+function update() {
+  if (Phaser.Input.Keyboard.JustDown(this.spaceKey)) {
+    // "dig" animation: show artifact briefly
+    this.artifactSprite.alpha = 1;
 
-  if (dist < 30) {
-    alert(`🪓 You found a ${this.currentArtifact.name}!\n${this.currentArtifact.fact}`);
-    this.artifactSprite.destroy();
-    this.spawnArtifact();
-  } else {
-    const hole = this.add.graphics();
-    hole.fillStyle(0x9e8c68, 1);
-    hole.fillCircle(pointer.x, pointer.y, 5);
-    hole.alpha = 0.5;
-    this.tweens.add({ targets: hole, alpha: 0, duration: 1200, onComplete: () => hole.destroy() });
+    // show info after short delay
+    this.time.delayedCall(500, () => {
+      alert(`🪓 You found a ${this.currentArtifact.name}!\n${this.currentArtifact.fact}`);
+      this.artifactSprite.destroy();
+      this.spawnArtifact(); // spawn next artifact
+    });
   }
 }
-
-function update() {}
