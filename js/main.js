@@ -7,8 +7,8 @@ const lessons = [
 
 const config = {
   type: Phaser.AUTO,
-  width: window.innerWidth,
-  height: window.innerHeight,
+  width: 800,
+  height: 600,
   parent: 'game',
   backgroundColor: '#f2e3c6',
   scene: { preload, create, update }
@@ -22,28 +22,26 @@ function create() {
   // sand background
   this.bg = this.add.graphics();
   this.bg.fillStyle(0xe3d5b8, 1);
-  this.bg.fillRect(0, 0, this.scale.width, this.scale.height);
+  this.bg.fillRect(0, 0, 800, 600);
 
-  // info text at top
-  this.infoText = this.add.text(10, 10, 'Click the ground to dig!', { fontSize: '20px', color: '#000', wordWrap: { width: this.scale.width - 20 } });
+  // info text
+  this.infoText = this.add.text(10, 10, 'Click the ground to dig!', { fontSize: '20px', color: '#000', wordWrap: { width: 780 } });
 
-  // spawn the first artifact
+  // spawn first artifact
   this.spawnArtifact();
 
-  // click handler
+  // handle clicks
   this.input.on('pointerdown', pointer => this.handleClick(pointer));
 }
 
 function spawnArtifact() {
   this.currentArtifact = Phaser.Math.RND.pick(lessons);
 
-  // random location
   this.artifactPos = {
-    x: Phaser.Math.Between(100, this.scale.width - 100),
-    y: Phaser.Math.Between(100, this.scale.height - 100)
+    x: Phaser.Math.Between(100, 700),
+    y: Phaser.Math.Between(100, 500)
   };
 
-  // draw artifact as a circle
   this.artifactSprite = this.add.graphics();
   this.artifactSprite.fillStyle(0x8b0000, 1);
   this.artifactSprite.fillCircle(this.artifactPos.x, this.artifactPos.y, 25);
@@ -52,16 +50,11 @@ function spawnArtifact() {
 function handleClick(pointer) {
   const dist = Phaser.Math.Distance.Between(pointer.x, pointer.y, this.artifactPos.x, this.artifactPos.y);
 
-  // clicked on artifact
   if (dist < 30) {
-    // show info box
     alert(`🪓 You found a ${this.currentArtifact.name}!\n${this.currentArtifact.fact}`);
-
-    // destroy old artifact and spawn new one
     this.artifactSprite.destroy();
     this.spawnArtifact();
   } else {
-    // small dig animation
     const hole = this.add.graphics();
     hole.fillStyle(0x9e8c68, 1);
     hole.fillCircle(pointer.x, pointer.y, 5);
