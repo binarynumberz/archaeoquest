@@ -28,37 +28,62 @@ const config = {
 const game = new Phaser.Game(config);
 
 function preload() {
-  // Ground and artifact use built-in Phaser textures instead of external images
-this.textures.generate('ground', { data: ['bbbbbbbb','bbbbbbbb','bbbbbbbb','bbbbbbbb','bbbbbbbb','bbbbbbbb','bbbbbbbb','bbbbbbbb'], pixelWidth: 8, palette: { b: '#e3d5b8' } });
-this.textures.generate('artifact', { data: ['.1.','.111.','.1.'], pixelWidth: 16, palette: { 1: '#b35c2e' } });
+  // nothing to load, all visuals drawn with code
 }
 
 function create() {
-  this.add.tileSprite(400, 300, 800, 600, 'ground');
-  this.infoText = this.add.text(10, 10, 'Click to start your dig!', { fontSize: '18px', color: '#000' });
+  // draw sand background using graphics
+  const bg = this.add.graphics();
+  bg.fillStyle(0xe3d5b8, 1);
+  bg.fillRect(0, 0, 800, 600);
+
+  this.infoText = this.add.text(10, 10, 'Click to start your dig!', {
+    fontSize: '18px',
+    color: '#000',
+    wordWrap: { width: 780 }
+  });
 
   this.spawnArtifact();
+
   this.input.on('pointerdown', pointer => this.checkDig(pointer));
 }
 
 function spawnArtifact() {
   const artifact = Phaser.Math.RND.pick(lessons);
   this.currentArtifact = artifact;
-  this.artifactSprite = this.add.image(
-    Phaser.Math.Between(100, 700),
-    Phaser.Math.Between(100, 500),
-    'artifact'
-  ).setScale(0.3).setAlpha(0.7);
+
+  // random artifact position
+  const x = Phaser.Math.Between(100, 700);
+  const y = Phaser.Math.Between(150, 500);
+
+  // draw artifact as a circle with a color and label
+  const color = Phaser.Display.Color.RandomRGB().color;
+  const g = this.add.graphics();
+  g.fillStyle(color, 1);
+  g.fillCircle(x, y, 20);
+
+  this.artifactSprite = g;
+  this.artifactPos = { x, y };
 }
 
 function checkDig(pointer) {
-  const dist = Phaser.Math.Distance.Between(pointer.x, pointer.y, this.artifactSprite.x, this.artifactSprite.y);
-  if (dist < 50) {
-    this.infoText.setText(`You found a ${this.currentArtifact.name}!\n${this.currentArtifact.fact}\nClick to search again.`);
+  const dist = Phaser.Math.Distance.Between(pointer.x, pointer.y, this.artifactPos.x, this.artifactPos.y);
+
+  if (dist < 30) {
+    this.infoText.setText(
+      `🪓 You found a ${this.currentArtifact.name}!\n${this.currentArtifact.fact}\nClick to search again.`
+    );
+
     this.artifactSprite.destroy();
     this.spawnArtifact();
   } else {
     this.infoText.setText('You dug here but found nothing. Try another spot.');
+    // small visual feedback: draw a little hole
+    const hole = this.add.graphics();
+    hole.fillStyle(0x9e8c68, 1);
+    hole.fillCircle(pointer.x, pointer.y, 5);
+    hole.alpha = 0.5;
+    this.tweens.add({ targets: hole, alpha: 0, duration: 1200, onComplete: () => hole.destroy() });
   }
 }
 
